@@ -27,6 +27,19 @@ app.post("/webhook", function (req, res) {
     // If the user sends a message to your bot, send a reply message
     req.body.events.forEach((event) => {
         if (event.type === "message") {
+            let replyText;
+
+            // Determine the reply based on the incoming message text
+            switch (event.message.text) {
+                case "hello":
+                    replyText = "Hi there! How can I help you today?";
+                    break;
+                case "help":
+                    replyText = "Sure! What do you need help with?";
+                    break;
+                default:
+                    replyText = "Sorry, I didn't understand that.";
+            }
             // You must stringify reply token and message data to send to the API server
             const dataString = JSON.stringify({
             // Define reply token
@@ -35,11 +48,7 @@ app.post("/webhook", function (req, res) {
                 messages: [
                     {
                         type: "text",
-                        text: "Hello, user",
-                    },
-                    {
-                        type: "text",
-                        text: "May I help you?",
+                        text: replyText,
                     },
                 ],
             });
